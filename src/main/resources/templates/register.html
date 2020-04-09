@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Register</title>
+
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script
+	src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link href="register.css" rel="stylesheet">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+</head>
+<body>
+	<div class="container register-form">
+		<form id="registerform" name="registerForm" class="form"
+			action="/register" method="post">
+			<div class="form">
+			
+				<div class="note">
+					<p>Register</p>
+				</div>
+									<p>
+						<span style="color: orangered" id="response"></span>
+					</p>
+				<h5  class="text-center text-info" th:text="${userNameError}"></h5>
+				<div class="form-content">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<input type="text" class="form-control" name="username"
+									placeholder="Your Name *" value="" />
+							</div>
+							<div class="form-group">
+								<input type="email" class="form-control" name="email"
+									placeholder="Email *" value="" />
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<input type="password" class="form-control" name="password"
+									id="password" placeholder="Your Password *" value="" />
+							</div>
+							<div class="form-group">
+								<input type="password" class="form-control"
+									placeholder="Confirm Password *" name="passwordConfirm"
+									id="passwordConfirm" value="" />
+							</div>
+						</div>
+					</div>
+					<p>
+						<span style="color: orangered" id="passwordConfirmError"></span>
+					</p>
+					<button type="submit" id="btnSubmit" class="btnSubmit">Submit</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+<script type="text/javascript">
+	$(document).ready(
+			function() {
+				$("#btnSubmit").click(
+						function(e) {
+
+							var password = $("#password").val();
+							var passwordConfirm = $("#passwordConfirm").val();
+							var username= $("#username").val();
+							var email = $("#email").val();
+							if (password != passwordConfirm) {
+								$("#passwordConfirmError").text(
+										"Password Confirm doesn't match");
+								return false;
+							} 
+							e.preventDefault();
+								$.post({
+									url : "registerAjax",
+									data : $('form[name=registerForm]').serialize(),
+
+									success : function(res) {							
+										$("#response").text(res.resultStatus);
+									}
+								});	
+// 							$.post({
+// 								url : "registerAjax",
+// 								data : {
+// 									username:username,
+// 									password:password,
+// 									email:email
+									
+// 								},
+
+// 								success : function(res) {							
+// 									$("#response").text(res.resultStatus);
+// 								}
+// 							});	
+								
+								
+						});
+			});
+</script>
+</html>
